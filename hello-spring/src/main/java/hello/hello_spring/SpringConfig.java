@@ -12,7 +12,21 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    private final EntityManager em;
+    /**
+     * 스프링 데이터 JPA가 SpringDataJpaMemberRepository 를 스프링 빈으로 자동 등록해준다.
+     */
+    private final MemberRepository memberRepository;
+
+    @Autowired
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+    @Bean
+    public MemberService memberService() {
+        return new MemberService(memberRepository);
+    }
+
+/*    private final EntityManager em;
 
     public SpringConfig(EntityManager em) {
         this.em = em;
@@ -30,8 +44,7 @@ public class SpringConfig {
 //        return new JdbcTemplateMemberRepository(dataSource);
         return new JpaMemberRepository(em);
     }
-
-
+    */
     /**
      * 참고: XML로 설정하는 방식도 있지만 최근에는 잘 사용하지 않으므로 생략한다.
      *
